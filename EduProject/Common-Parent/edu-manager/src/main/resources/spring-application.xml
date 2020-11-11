@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx  
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd  
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        
+       	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+				<!--要是有多个配置文件，只需在这里继续添加即可 -->
+				<value>classpath:db.properties</value>
+				</list>
+			</property>
+		</bean>
+        
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        	<property name="driverClass" value="${jdbc.driver}"></property>
+        	<property name="jdbcUrl" value="${jdbc.url}"></property>
+        	<property name="user" value="${jdbc.username}"></property>
+        	<property name="password" value="${jdbc.password}"></property>
+        	<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+        	<property name="minPoolSize" value="${jdbc.minPoolSize}"></property>
+        </bean>
+        
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        	<property name="dataSource" ref="dataSource"></property>
+        	<!-- 配置别名 -->
+        	<property name="typeAliasesPackage" value="com.yuxiu.entity"></property>
+        	<property name="mapperLocations" value="classpath:com/yuxiu/edu/mapper/*.xml"></property>
+        </bean> 
+        
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        	<property name="basePackage" value="com.yuxiu.edu.mapper"></property>
+        </bean>
+        <context:component-scan base-package="com.yuxiu.edu.service"></context:component-scan>
+     
+</beans>

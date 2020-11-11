@@ -1,0 +1,4 @@
+com\yuxiu\edu\service\base\IBaseServiceImpl.class
+com\yuxiu\edu\service\IUserService.class
+com\yuxiu\edu\service\base\IBaseService.class
+com\yuxiu\edu\service\IUserServiceImpl.class
